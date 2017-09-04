@@ -6,7 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "set NODE_ENV=dev && webpack-dev-server --progress --colors",
-    "mock": "node --harmony ./mock/server.js",
     "build": "rd/s/q build && NODE_ENV=prod uction && webpack --config ./webpack.production.config.js --progress --colors"
   },
   "repository": {
