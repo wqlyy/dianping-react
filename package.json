@@ -1,7 +1,7 @@
 {
   "name": "dianping",
   "version": "1.0.0",
-  "description": "'react-app实例'",
+  "description": "webpack&&react快速开发脚手架",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
