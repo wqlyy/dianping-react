@@ -5,16 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "set NODE_ENV=dev && webpack-dev-server --progress --colors",
+    "start": "set NODE_ENV=dev&&webpack-dev-server --progress --colors",
     "mock": "node --harmony ./mock/server.js",
-    "build": "rd/s/q build && NODE_ENV=prod uction && webpack --config ./webpack.production.config.js --progress --colors"
+    "build": "rd/s/q build && NODE_ENV=production && webpack --config ./webpack.production.config.js --progress --colors"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wqlyy/dianping-react.git"
   },
   "keywords": [
-    "react-webapp" 
+    "react-webapp"
   ],
   "author": "wangqiangweb",
   "license": "ISC",
@@ -53,6 +53,7 @@
     "immutable": "^3.8.1",
     "react": "^15.3.1",
     "react-addons-css-transition-group": "^15.3.1",
+    "react-addons-perf": "^15.4.2",
     "react-addons-pure-render-mixin": "^15.3.1",
     "react-dom": "^15.3.1",
     "react-redux": "^4.4.5",
