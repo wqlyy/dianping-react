@@ -7,7 +7,7 @@ class List extends React.Component{
     render(){
         return(
             <ul>
-                {this.props.data.map((item,index)=>{
+                {this.props.data.length==0?<li>暂无数据，请添加...</li>:this.props.data.map((item,index)=>{
                     return <li onClick={this.props.deleteFn.bind(this,item.id)} key={index}>{item.value}</li>
                 })}
             </ul>
