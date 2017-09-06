@@ -1,11 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
 import PureRenderMixin from 'react-addons-pure-render-mixin';
-import Hello from './containers/Hello';
+import TodoList from './containers/TodoList';
 //引入公共样式
+import './static/common.less'
 import Perf from 'react-addons-perf';
+
+console.log(__DEV__);//是否开发环境
 if(__DEV__){
-    // alert(1);
     window.Perf = Perf
 }
-render(<Hello/>,document.getElementById('root'));
+render(<TodoList/>,document.getElementById('root'));
