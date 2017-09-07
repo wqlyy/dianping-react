@@ -13,4 +13,4 @@ class User extends React.Component{
     }
 }
 
-module.exports = User
+export default User

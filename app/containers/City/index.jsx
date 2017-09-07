@@ -12,5 +12,4 @@ class City extends React.Component{
         )
     }
 }
-
-module.exports = City
+export default City

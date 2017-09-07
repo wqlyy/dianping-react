@@ -13,4 +13,4 @@ class Detail extends React.Component{
     }
 }
 
-module.exports = Detail
+export default Detail
