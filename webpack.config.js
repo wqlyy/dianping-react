@@ -15,32 +15,38 @@ module.exports = {
     },
 
     resolve:{
-        extensions:['', '.js','.jsx']
+        extensions:['.js','.jsx']
     },
 
     module: {
-        preLoaders: [
-            // 报错 ？？？？？
-            {test: /\.(js|jsx)$/, loader: "eslint-loader", exclude: /node_modules/}
-        ],
         loaders: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: 'babel' },
-            { test: /\.less$/, exclude: /node_modules/, loader: 'style!css!postcss!less' },
-            { test: /\.css$/, exclude: /node_modules/, loader: 'style!css!postcss' },
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: 'eslint-loader!babel-loader' },
+            { test: /\.less$/, exclude: /node_modules/, loader: 'style-loader!css-loader!postcss-loader!less-loader' },
+            { test: /\.css$/, exclude: /node_modules/, loader: 'style-loader!css-loader!postcss-loader' },
             { test:/\.(png|gif|jpg|jpeg|bmp)$/i, loader:'url-loader?limit=5000' },  // 限制大小5kb
             { test:/\.(png|woff|woff2|svg|ttf|eot)($|\?)/i, loader:'url-loader?limit=5000'} // 限制大小小于5k
         ]
     },
 
-    eslint: {
-        configFile: '.eslintrc' // Rules for eslint
-    },
 
-    postcss: [
-        require('autoprefixer') //调用autoprefixer插件，例如 display: flex
-    ],
 
     plugins: [
+        new webpack.LoaderOptionsPlugin({
+            options: {
+                eslint: {
+                    configFile: '.eslintrc' // Rules for eslint
+                },
+                postcss: [
+                    require('autoprefixer') //调用autoprefixer插件，例如 display: flex
+                ],
+                devServer: {
+                    contentBase: "./public", //本地服务器所加载的页面所在的目录
+                    colors: true, //终端中输出结果为彩色
+                    historyApiFallback: true, //不跳转
+                    inline: true //实时刷新
+                }
+            }
+        }),
         // html 模板插件
         new HtmlWebpackPlugin({
             template: __dirname + '/app/index.tmpl.html'

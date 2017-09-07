@@ -9,9 +9,20 @@ class App extends React.Component{
             initDone:false
         }
     }
+    componentDidMount(){
+        setTimeout(function(){
+            this.setState({
+                initDone:true
+            })
+        }.bind(this),3000)
+    }
     render(){
         return (
-            <div>{this.props.children}</div>
+            <div>
+                {
+                    this.state.initDone?this.props.children: <div>加载中...</div>
+                }
+            </div>
         )
     }
 }
