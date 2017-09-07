@@ -3,6 +3,7 @@ var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+
 module.exports = {
     entry: {
         app: path.resolve(__dirname, 'app/index.jsx'),
@@ -29,22 +30,22 @@ module.exports = {
     },
 
     module: {
-        loaders: [
-            {test: /\.(js|jsx)$/, exclude: /node_modules/, loader: 'babel-loader'},
+        rules: [
+            {test: /\.(js|jsx)$/, exclude: /node_modules/, use: 'babel-loader'},
             {
                 test: /\.less$/,
                 exclude: /node_modules/,
-                loader: ExtractTextPlugin.extract({fallback:'style-loader',use: 'css-loader!postcss-loader!less-loader'})
+                use: ExtractTextPlugin.extract({fallback:'style-loader',use: 'css-loader!postcss-loader!less-loader'})
             },
             {
                 test: /\.css$/,
                 exclude: /node_modules/,
-                loader: ExtractTextPlugin.extract({fallback:'style-loader', use:'css-loader!postcss-loader'})
+                use: ExtractTextPlugin.extract({fallback:'style-loader', use:['css-loader','postcss-loader']})
             },
-            {test: /\.(png|gif|jpg|jpeg|bmp)$/i, loader: 'url-loader?limit=5000&name=img/[name].[chunkhash:8].[ext]'},
+            {test: /\.(png|gif|jpg|jpeg|bmp)$/i, use: 'url-loader?limit=5000&name=img/[name].[chunkhash:8].[ext]'},
             {
                 test: /\.(png|woff|woff2|svg|ttf|eot)($|\?)/i,
-                loader: 'url-loader?limit=5000&name=fonts/[name].[chunkhash:8].[ext]'
+                use: 'url-loader?limit=5000&name=fonts/[name].[chunkhash:8].[ext]'
             }
         ]
     },
@@ -52,18 +53,17 @@ module.exports = {
         new webpack.LoaderOptionsPlugin({
             options: {
                 postcss: [
-                    require('autoprefixer') //调用autoprefixer插件，例如 display: flex
+                    require('autoprefixer')({browsers:["last 2 versions","Firefox >= 20","ie 8","ie 7","ie 6"]}) //调用autoprefixer插件，例如 display: flex
                 ]
             }
         }),
         // webpack 内置的 banner-plugin
-        new webpack.BannerPlugin("Copyright by wangfupeng1988@github.com."),
+        new webpack.BannerPlugin("Copyright by wqlyy@github.com."),
 
         // html 模板插件
         new HtmlWebpackPlugin({
             template: __dirname + '/app/index.tmpl.html'
         }),
-
         // 定义为生产环境，编译 React 时压缩到最小
         new webpack.DefinePlugin({
             'process.env': {
