@@ -36,9 +36,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                {
-                    this.state.initDone ? this.props.children : <div>加载中...</div>
-                }
+                {this.state.initDone ? this.props.children : <div>加载中...</div>}
             </div>
         )
     }
