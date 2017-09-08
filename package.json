@@ -60,7 +60,9 @@
     "react-dom": "^15.6.1",
     "react-redux": "^4.4.8",
     "react-router": "^2.8.1",
+    "react-swipe": "^5.0.8",
     "redux": "^3.7.2",
+    "swipe-js-iso": "^2.0.4",
     "whatwg-fetch": "^1.1.1"
   }
 }

@@ -1,14 +1,13 @@
 var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 // var nodeModulesPath = path.resolve(__dirname, 'node_modules')
 // console.log(process.env.NODE_ENV)
 
 module.exports = {
-    devtool: 'eval-source-map',
+    // devtool: 'eval-source-map',
     entry: path.resolve(__dirname, 'app/index.jsx'),
     output: {
         path: __dirname + "/build",
@@ -24,7 +23,7 @@ module.exports = {
             { test: /\.(js|jsx)$/, exclude: /node_modules/, loader: 'eslint-loader!babel-loader' },
             { test: /\.less$/, exclude: /node_modules/, loader: 'style-loader!css-loader!postcss-loader!less-loader' },
             { test: /\.css$/, exclude: /node_modules/, loader: 'style-loader!css-loader!postcss-loader' },
-            { test:/\.(png|gif|jpg|jpeg|bmp)$/i, loader:'url-loader?limit=5000' },  // 限制大小5kb
+            { test:/\.(png|gif|jpg|jpeg|bmp)$/i, exclude:/Category/, loader:'url-loader?limit=5000' },  // 限制大小5kb
             { test:/\.(png|woff|woff2|svg|ttf|eot)($|\?)/i, loader:'url-loader?limit=5000'} // 限制大小小于5k
         ]
     },
@@ -40,12 +39,6 @@ module.exports = {
                 postcss: [
                     require('autoprefixer') //调用autoprefixer插件，例如 display: flex
                 ],
-                devServer: {
-                    contentBase: "./public", //本地服务器所加载的页面所在的目录
-                    colors: true, //终端中输出结果为彩色
-                    historyApiFallback: true, //不跳转
-                    inline: true //实时刷新
-                }
             }
         }),
         // html 模板插件
