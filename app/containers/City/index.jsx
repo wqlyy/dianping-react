@@ -4,7 +4,7 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 class City extends React.Component{
     constructor(props){
         super(props);
-        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate()
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     }
     render(){
         return (

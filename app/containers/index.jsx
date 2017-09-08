@@ -4,13 +4,13 @@ import LocalStor from '../util/localStore'
 import {CITYNAME} from '../config/localStoreKey'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import * as userInfoActionsFormOtherFile from '../actions/userinfo'
+import * as userInfoActionsFromOtherFile from '../actions/userinfo'
 
 //父组件
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate();
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
         this.state = {
             initDone: false
         }
@@ -49,7 +49,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        userInfoActions: bindActionCreators(userInfoActionsFormOtherFile, dispatch)
+        userInfoActions: bindActionCreators(userInfoActionsFromOtherFile, dispatch)
     }
 }
 // export default App

@@ -1,36 +1,37 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import '../../static/common.less'
+import HomeHeader from '../../components/HomeHeader'
+import {connect} from 'react-redux'
+
+
 class Home extends React.Component{
     constructor(props){
         super(props);
-        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate()
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
     }
     render(){
         return (
-            <h1>hello , world</h1>
+            <div>
+                <HomeHeader cityName={this.props.userinfo.cityName}/>
+            </div>
         )
     }
 }
 
-export default Home
-
-
-
 //-------------------- redux react 绑定 -------------------
-//
-// function mapStateToProps(state) {
-//     return {
-//         userinfo:state.userinfo
-//     }
-// }
-// function mapDispatchToPropos(dispatch) {
-//     return {
-//
-//     }
-// }
-//
-// export default connect(
-//     mapStateToProps,
-//     mapDispatchToPropos
-// )(Home)
+
+function mapStateToProps(state) {
+    return {
+        userinfo:state.userinfo
+    }
+}
+function mapDispatchToPropos(dispatch) {
+    return {
+
+    }
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToPropos
+)(Home)
