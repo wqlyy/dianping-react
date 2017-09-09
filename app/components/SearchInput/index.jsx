@@ -1,5 +1,6 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
+import './style.less'
 
 class SearchInput extends React.Component{
     constructor(props){
