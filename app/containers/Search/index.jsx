@@ -8,8 +8,15 @@ class Search extends React.Component{
     }
     render(){
         return (
-            <h1>Search</h1>
+           <div>
+               <h1>Search </h1>
+           </div>
         )
+    }
+    componentDidMount(){
+        const params = this.props.params;
+        console.log("catwgory param: "+params.category);
+        console.log("key param: "+params.keyword);
     }
 }
 
