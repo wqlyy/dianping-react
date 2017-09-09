@@ -10,7 +10,7 @@ const initialState = {
     data: [],//存储列表信息
     hasMore: false,//记录当前状态下有无更多数据可以加载
     isLoadingMore: false,//记录当前状态下，是“加载中...”还是“加载更多”
-    page: 1 //记录下一页页码
+    page: 0 //记录下一页页码
 }
 class List extends React.Component {
     constructor(props) {
@@ -72,7 +72,7 @@ class List extends React.Component {
             return
         }
         //重置state
-        this.setState(initialState)
+        this.setState(initialState);//有bug
         //重新加载数据
         this.loadFirstPageData()
     }
