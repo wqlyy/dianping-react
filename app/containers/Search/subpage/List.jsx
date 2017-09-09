@@ -1,98 +1,129 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {getListData} from '../../../fetch/home/home'
-import ListComponent from '../../../components/List'
+import { connect } from 'react-redux'
+
+import ListCompoent from '../../../components/List'
 import LoadMore from '../../../components/LoadMore'
 
-// import './style.less'
+import { getSearchData } from '../../../fetch/search/search'
 
+// 初始化一个组件的 state
 const initialState = {
-    data: [],//存储列表信息
-    hasMore: false,//记录当前状态下有无更多数据可以加载
-    isLoadingMore: false,//记录当前状态下，是“加载中...”还是“加载更多”
-    page: 0 //记录下一页页码
+    data: [],
+    hasMore: false,
+    isLoadingMore: false,
+    page: 0
 }
-class List extends React.Component {
-    constructor(props) {
-        super(props);
-        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+
+class SearchList extends React.Component {
+    constructor(props, context) {
+        super(props, context);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
         this.state = initialState
     }
-
-    loadFirstPageData() {//获取第一页数据
-        const cityName = this.props.cityName;
-        const keyword = this.props.keyword || '';
-        const category = this.props.category;
-        const reslut = getListData(0, cityName, category, keyword);
-        this.resultHandle(reslut)
-    }
-
-    loadMoreData() {//获取更多数据
-        //记录状态
-        this.setState({
-            isLoadingMore: true
-        });
-        const cityName = this.props.cityName;
-        const page = this.state.page;//下一页的页码
-        const keyword = this.props.keyword || '';
-        const category = this.props.category;
-        const reslut = getListData(page, cityName, category, keyword);
-        this.resultHandle(reslut);
-        //增加page的计数
-        this.setState({
-            page: page + 1,
-            isLoadingMore: false
-        })
-    }
-
-    resultHandle(result) {
-        result.then(res => {
-            return res.json()
-        }).then(json => {
-            const hasMore = json.hasMore;
-            const data = json.data;
-            this.setState({
-                hasMore: hasMore,
-                data: this.state.data.concat(data)//数据合并,不能覆盖
-            })
-        })
-    }
-
-    componentDidMount() {
-        //获取首页数据
-        this.loadFirstPageData()
-    }
-
-    componentDidUpdate(prevProps,prevState) {
-        // 重新搜索后走的是组件更新方法
-        const keyword = this.props.keyword || '';
-        const category = this.props.category;
-        //搜索条件完全相等时，忽略本次搜索请求
-        if(keyword === prevProps.keyword && category === prevProps.category){
-            return
-        }
-        //重置state
-        this.setState(initialState);//有bug
-        //重新加载数据
-        this.loadFirstPageData()
-    }
-
     render() {
         return (
             <div>
                 {
                     this.state.data.length
-                        ? <ListComponent data={this.state.data}/>
-                        : <div>加载中...</div>
+                    ? <ListCompoent data={this.state.data}/>
+                    : <div>{/* 加载中... */}</div>
                 }
                 {
                     this.state.hasMore
-                        ? <LoadMore isLoadingMore={this.state.isLoadingMore} loadMoreFn={this.loadMoreData.bind(this)}/>
-                        : ''
+                    ? <LoadMore isLoadingMore={this.state.isLoadingMore} loadMoreFn={this.loadMoreData.bind(this)}/>
+                    : ''
                 }
             </div>
         )
     }
+    componentDidMount() {
+        // 获取首页数据
+        this.loadFirstPageData()
+    }
+    // 获取首页数据
+    loadFirstPageData() {
+        const cityName = this.props.userinfo.cityName
+        const keyword = this.props.keyword || ''
+        const category = this.props.category
+        const result = getSearchData(0, cityName, category, keyword)
+        this.resultHandle(result)
+    }
+    // 加载更多数据
+    loadMoreData() {
+        // 记录状态
+        this.setState({
+            isLoadingMore: true
+        })
+
+        const cityName = this.props.userinfo.cityName
+        const page = this.state.page
+        const keyword = this.props.keyword || ''
+        const category = this.props.category
+        const result = getSearchData(page, cityName, category, keyword)
+        this.resultHandle(result)
+
+        // 更新状态
+        this.setState({
+            isLoadingMore: false
+        })
+    }
+    // 处理数据
+    resultHandle(result) {
+        // 增加 page 计数
+        const page = this.state.page
+        this.setState({
+            page: page + 1
+        })
+
+        result.then(res => {
+            return res.json()
+        }).then(json => {
+            const hasMore = json.hasMore
+            const data = json.data
+
+            this.setState({
+                hasMore: hasMore,
+                // 注意，这里讲最新获取的数据，拼接到原数据之后，使用 concat 函数
+                data: this.state.data.concat(data)
+            })
+        }).catch(ex => {
+            if (__DEV__) {
+                console.error('搜索页获取数据报错, ', ex.message)
+            }
+        })
+    }
+    // 处理重新搜索
+    componentDidUpdate(prevProps, prevState) {
+        const keyword = this.props.keyword
+        const category = this.props.category
+
+        // 搜索条件完全相等时，忽略。重要！！！
+        if (keyword === prevProps.keyword && category === prevProps.category) {
+            return
+        }
+
+        // 重置 state
+        this.setState(initialState)
+
+        // 重新加载数据
+        this.loadFirstPageData()
+    }
 }
 
-export default List
+// -------------------redux react 绑定--------------------
+
+function mapStateToProps(state) {
+    return {
+        userinfo: state.userinfo
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+    }
+}
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(SearchList)

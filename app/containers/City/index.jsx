@@ -1,22 +1,23 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
-import {hashHistory} from 'react-router'
-import * as userInfoActionsFromOtherFile from '../../actions/userinfo'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { hashHistory } from 'react-router'
+
 import Header from '../../components/Header'
 import CurrentCity from '../../components/CurrentCity'
 import CityList from '../../components/CityList'
-import LocalStor from '../../util/localStore'
-import {CITYNAME} from '../../config/localStoreKey'
 
+import * as userInfoActionsFromOtherFile from '../../actions/userinfo'
+
+import { CITYNAME } from '../../config/localStoreKey'
+import localStore from '../../util/localStore'
 
 class City extends React.Component {
-    constructor(props) {
-        super(props);
-        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+    constructor(props, context) {
+        super(props, context);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     }
-
     render() {
         return (
             <div>
@@ -26,43 +27,37 @@ class City extends React.Component {
             </div>
         )
     }
-
     changeCity(newCity) {
         if (newCity == null) {
             return
         }
-        // 将新选择的城市设置为当前城市
-        // 1.修改redux
-        const userinfo = this.props.userinfo;
-        userinfo.cityName = newCity;
-        this.props.userInfoActions.update(userinfo);
-        // 2.修改 localStorage
-        LocalStor.setItem(CITYNAME, newCity);
-        // 3.跳转至首页
+        // 修改 redux
+        const userinfo = this.props.userinfo
+        userinfo.cityName = newCity
+        this.props.userInfoActions.update(userinfo)
+
+        // 修改 cookie
+        localStore.setItem(CITYNAME, newCity)
+
+        // 跳转页面
         hashHistory.push('/')
     }
-
-
-    // componentDidMount(){
-    //     console.log(this.props.userinfo);
-    //     console.log(this.props.userInfoActions);
-    // }
 }
 
-//-------------------- redux react 绑定 -------------------
+// -------------------redux react 绑定--------------------
 
 function mapStateToProps(state) {
     return {
         userinfo: state.userinfo
     }
 }
-function mapDispatchToPropos(dispatch) {
+
+function mapDispatchToProps(dispatch) {
     return {
         userInfoActions: bindActionCreators(userInfoActionsFromOtherFile, dispatch)
     }
 }
-
 export default connect(
     mapStateToProps,
-    mapDispatchToPropos
+    mapDispatchToProps
 )(City)

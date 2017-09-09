@@ -3,35 +3,39 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import './style.less'
 
-
 class LoadMore extends React.Component {
-    constructor(props) {
-        super(props);
-        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
-
+    constructor(props, context) {
+        super(props, context);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     }
-
+    render() {
+        return (
+            <div className="load-more" ref="wrapper">
+                {
+                    this.props.isLoadingMore
+                    ? <span>加载中...</span>
+                    : <span onClick={this.loadMoreHandle.bind(this)}>加载更多</span>
+                }
+            </div>
+        )
+    }
     loadMoreHandle() {
-        //执行传递过来的函数
-        this.props.loadMoreFn()
+        // 执行传输过来的
+        this.props.loadMoreFn();
     }
-
     componentDidMount() {
-        //截流
-        let timeoutId;
-        const loadMoreFn = this.props.loadMoreFn;
-        const wrapper = this.refs.wrapper;
-
+        // 使用滚动时自动加载更多
+        const loadMoreFn = this.props.loadMoreFn
+        const wrapper = this.refs.wrapper
+        let timeoutId
         function callback() {
-            const top = wrapper.getBoundingClientRect().top;//获取DOM元素距离顶部的距离
-            const windowHeight = window.screen.height;
-            console.log(windowHeight);
+            const top = wrapper.getBoundingClientRect().top
+            const windowHeight = window.screen.height
             if (top && top < windowHeight) {
-                // 当wrapper 已经被滚动到暴露在页面的可视范围之内的时候，触发
+                // 证明 wrapper 已经被滚动到暴露在页面可视范围之内了
                 loadMoreFn()
             }
         }
-
         window.addEventListener('scroll', function () {
             if (this.props.isLoadingMore) {
                 return
@@ -40,19 +44,7 @@ class LoadMore extends React.Component {
                 clearTimeout(timeoutId)
             }
             timeoutId = setTimeout(callback, 50)
-        }.bind(this), false)
-    }
-
-    render() {
-        return (
-            <div className="load-more" ref="wrapper">
-                {
-                    this.props.isLoadingMore
-                        ? <span>加载中...</span>
-                        : <span onClick={this.loadMoreHandle.bind(this)}>加载更多</span>
-                }
-            </div>
-        )
+        }.bind(this), false);
     }
 }
 

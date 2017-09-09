@@ -1,23 +1,17 @@
 import React from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
-import SearchInput from '../../components/SearchInput'
-import {hashHistory} from 'react-router'
+import { hashHistory } from 'react-router'
+
+import SearchInput from '../SearchInput'
 
 import './style.less'
 
-
-class SearchHeader extends React.Component{
-    constructor(props){
-        super(props);
-        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+class SearchHeader extends React.Component {
+    constructor(props, context) {
+        super(props, context);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     }
-    clickHandle(){
-        window.history.back()
-    }
-    enterHandle(value){
-        hashHistory.push('/search/all/'+encodeURIComponent(value))
-    }
-    render(){
+    render() {
         return (
             <div id="search-header" className="clear-fix">
                 <span className="back-icon float-left" onClick={this.clickHandle.bind(this)}>
@@ -30,6 +24,12 @@ class SearchHeader extends React.Component{
                 </div>
             </div>
         )
+    }
+    clickHandle() {
+        window.history.back()
+    }
+    enterHandle(value) {
+        hashHistory.push('/search/all/' + encodeURIComponent(value))
     }
 }
 

@@ -3,13 +3,12 @@ import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import './style.less'
 
-
-class CurrentCity extends React.Component{
-    constructor(props){
-        super(props);
-        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+class CurrentCity extends React.Component {
+    constructor(props, context) {
+        super(props, context);
+        this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this);
     }
-    render(){
+    render() {
         return (
             <div className="current-city">
                 <h2>{this.props.cityName}</h2>
