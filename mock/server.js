@@ -108,9 +108,21 @@ router.get('/api/orderlist/:username', function *(next) {
     this.body = orderList
 })
 
+// 提交评论
+router.post('/api/submitComment', function *(next) {
+    console.log('提交评论')
+
+    // 获取参数
+
+    this.body = {
+        errno: 0,
+        msg: 'ok'
+    }
+})
+
 // 开始服务并生成路由
 app.use(router.routes())
-   .use(router.allowedMethods());
+    .use(router.allowedMethods());
 app.listen(3000,function(){
-    console.log('server is running at port 3000')
+    console.log('server is running at port at 3000')
 });
